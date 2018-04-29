@@ -8,11 +8,16 @@ import pureconfig._
 object HelloWorld {
 
   def main(args: Array[String]): Unit = {
-    implicit val appConfig = loadConfig[Config].right.get
+    implicit val appConfig = loadConfig[Config] match {
+      case Right(c) => c
+      case Left(crfs) =>
+        crfs.toList.foreach { crf => println(crf.description) }
+        sys.exit(1)
+    }
 
     withSparkStreaming { ssc =>
       val input = ssc.textFileStream(appConfig.inputDir)
-      sayHello(input)
+      sayHello(input) // do something here
     }
   }
 
@@ -21,7 +26,9 @@ object HelloWorld {
   }
 
   def withSparkStreaming(f: StreamingContext => Unit)(implicit appConfig: Config): Unit = {
-    val sparkConf = new SparkConf().setAppName(appConfig.appName)
+    val sparkConf = new SparkConf()
+      .setAppName(appConfig.appName)
+      .setMaster(appConfig.spark.master)
     val ssc = new StreamingContext(sparkConf, Duration(appConfig.spark.batchDuration.toMillis))
 
     f(ssc)
