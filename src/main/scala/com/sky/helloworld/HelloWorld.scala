@@ -17,7 +17,7 @@ object HelloWorld {
 
     withSparkStreaming { ssc =>
       val input = ssc.textFileStream(appConfig.inputDir)
-      sayHello(input) // do something here
+      sayHello(input).print()
     }
   }
 
