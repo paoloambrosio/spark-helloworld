@@ -16,8 +16,9 @@ object HelloWorld {
     }
 
     withSparkStreaming { ssc =>
+      // TODO this should be for batch, not streaming!
       val input = ssc.textFileStream(appConfig.inputDir)
-      sayHello(input).print()
+      sayHello(input).saveAsTextFiles(appConfig.outputDir)
     }
   }
 
