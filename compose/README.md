@@ -11,9 +11,13 @@
 
 ```
 $ docker-compose exec hdfs-datanode bash
-# /opt/hadoop-2.7.4/bin/hdfs dfs -mkdir /helloworld
-# /opt/hadoop-2.7.4/bin/hdfs dfs -copyFromLocal mylocalfile /helloworld/myremotefile
+# /opt/hadoop-2.7.4/bin/hdfs dfs -mkdir /world
+# /opt/hadoop-2.7.4/bin/hdfs dfs -copyFromLocal mylocalfile /world/myremotefile
+...
+# /opt/hadoop-2.7.4/bin/hdfs dfs -rm -f -r /helloworld
 ```
+
+
 
 ## Credits
 
