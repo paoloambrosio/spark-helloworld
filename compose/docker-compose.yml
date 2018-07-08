@@ -42,7 +42,5 @@ services:
       - spark-worker
       - hdfs-datanode
     environment:
-      - "SPARK_MASTER=spark://spark-master:7077"
       - "INPUT_DIR=hdfs://hdfs-namenode/world/"
       - "OUTPUT_DIR=hdfs://hdfs-namenode/helloworld/"
-      - "JAVA_OPTS=-Xmx512m"

@@ -31,7 +31,6 @@ object HelloWorld {
   def withSparkBatch(f: SparkSession => Unit)(implicit appConfig: Config): Unit = {
     val sparkSession = SparkSession.builder()
       .appName(appConfig.appName)
-      .master(appConfig.spark.master)
       .getOrCreate()
 
     f(sparkSession)
