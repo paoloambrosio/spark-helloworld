@@ -1,6 +1,7 @@
 package com.sky.helloworld
 
 import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.streaming.dstream.DStream
 import pureconfig._
 
 object HelloWorld {
@@ -13,7 +14,7 @@ object HelloWorld {
         sys.exit(1)
     }
 
-    withSpark { ss =>
+    withSparkBatch { ss =>
       import ss.implicits._
       ss.read.textFile(appConfig.inputDir)
         .map { line => s"Hello, $line" } // replace with sayHello method
@@ -27,25 +28,22 @@ object HelloWorld {
 //    }
   }
 
-  def sayHello(ds: Dataset[String]): Dataset[String] = {
-    ds.map { line => s"Hello, $line" }
-  }
-
-  def withSpark(f: SparkSession => Unit)(implicit appConfig: Config): Unit = {
+  def withSparkBatch(f: SparkSession => Unit)(implicit appConfig: Config): Unit = {
     val sparkSession = SparkSession.builder()
       .appName(appConfig.appName)
       .master(appConfig.spark.master)
-        .getOrCreate()
+      .getOrCreate()
 
     f(sparkSession)
 
     sparkSession.stop()
   }
 
-//  def sayHello(stream: DStream[String]): DStream[String] = {
-//    stream.map { line => s"Hello, $line" }
+// Requires import ss.implicits._
+//  def sayHelloDataset(ds: Dataset[String]): Dataset[String] = {
+//    ds.map { line => s"Hello, $line" }
 //  }
-//
+
 //  def withSparkStreaming(f: StreamingContext => Unit)(implicit appConfig: Config): Unit = {
 //    val sparkConf = new SparkConf()
 //      .setAppName(appConfig.appName)
@@ -57,4 +55,9 @@ object HelloWorld {
 //    ssc.start()
 //    ssc.awaitTermination()
 //  }
+
+  def sayHelloStreaming(stream: DStream[String]): DStream[String] = {
+    stream.map { line => s"Hello, $line" }
+  }
+
 }
