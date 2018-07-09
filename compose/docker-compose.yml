@@ -44,3 +44,10 @@ services:
     environment:
       - "INPUT_DIR=hdfs://hdfs-namenode/world/"
       - "OUTPUT_DIR=hdfs://hdfs-namenode/helloworld/"
+
+  prometheus:
+    image: prom/prometheus:v2.3.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
