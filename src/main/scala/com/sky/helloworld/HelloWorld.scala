@@ -6,6 +6,9 @@ import pureconfig._
 
 object HelloWorld {
 
+  // should we set appname from config? then we need to extract the config
+  @transient lazy val log = org.apache.log4j.LogManager.getLogger("spark-helloworld")
+
   def main(args: Array[String]): Unit = {
     implicit val appConfig = loadConfig[Config] match {
       case Right(c) => c
@@ -56,7 +59,10 @@ object HelloWorld {
 //  }
 
   def sayHelloStreaming(stream: DStream[String]): DStream[String] = {
-    stream.map { line => s"Hello, $line" }
+    stream.map { line => {
+      log.info(s"Processing '$line'")
+      s"Hello, $line"
+    }}
   }
 
 }
