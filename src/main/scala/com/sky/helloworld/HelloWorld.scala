@@ -1,6 +1,6 @@
 package com.sky.helloworld
 
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoder, SparkSession}
 import org.apache.spark.streaming.dstream.DStream
 import pureconfig._
 
@@ -19,8 +19,7 @@ object HelloWorld {
 
     withSparkBatch { ss =>
       import ss.implicits._
-      ss.read.textFile(appConfig.inputDir)
-        .map { line => s"Hello, $line" } // replace with sayHello method
+      sayHelloDataset(ss.read.textFile(appConfig.inputDir))
         .write.save(appConfig.outputDir)
     }
 
@@ -41,10 +40,9 @@ object HelloWorld {
     sparkSession.stop()
   }
 
-// Requires import ss.implicits._
-//  def sayHelloDataset(ds: Dataset[String]): Dataset[String] = {
-//    ds.map { line => s"Hello, $line" }
-//  }
+  def sayHelloDataset(ds: Dataset[String])(implicit encoder: Encoder[String]): Dataset[String] = {
+    ds.map { line => s"Hello, $line" }
+  }
 
 //  def withSparkStreaming(f: StreamingContext => Unit)(implicit appConfig: Config): Unit = {
 //    val sparkConf = new SparkConf()
