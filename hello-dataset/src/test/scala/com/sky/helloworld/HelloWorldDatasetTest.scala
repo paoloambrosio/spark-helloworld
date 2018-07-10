@@ -12,7 +12,7 @@ class HelloWorldDatasetTest extends WordSpec with DatasetSuiteBase {
     "greet every name" in {
       val input = List("A", "B").toDS
       val expected = List("Hello, A", "Hello, B").toDS
-      assertDatasetEquals(expected, HelloWorld.sayHelloDataset(input))
+      assertDatasetEquals(expected, HelloWorldDataset.sayHelloDataset(input))
     }
   }
 }

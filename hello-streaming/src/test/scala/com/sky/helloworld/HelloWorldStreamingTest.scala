@@ -10,7 +10,7 @@ class HelloWorldStreamingTest extends WordSpec with StreamingSuiteBase {
     "greet every name in each input" in {
       val input = List(List("A", "B"), List("C"))
       val expected = List(List("Hello, A", "Hello, B"), List("Hello, C"))
-      testOperation[String, String](input, HelloWorld.sayHelloStreaming _, expected)
+      testOperation[String, String](input, HelloWorldStreaming.sayHelloStreaming _, expected)
     }
   }
 }
