@@ -24,24 +24,15 @@ lazy val sparkSettings = {
 
   Seq(
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % sparkVersion % Provided
+      "org.apache.spark" %% "spark-core"           % sparkVersion % Provided,
+      "org.apache.spark" %% "spark-sql"            % sparkVersion,
+      "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion
     )
   ) ++ testSettings
 }
 
-lazy val root = (project in file(".")).aggregate(`hello-dataset`, `hello-streaming`)
-lazy val `hello-dataset` = project.settings(
-  commonSettings ++ sparkSettings ++ Seq(
-    libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-sql" % sparkVersion % Provided
-    )
-  ))
+lazy val root = (project in file(".")).aggregate(`hello-batch`, `hello-streaming`)
 
+lazy val `hello-batch` = project.settings(commonSettings ++ sparkSettings)
 
-lazy val `hello-streaming` = project.settings(
-  commonSettings ++ sparkSettings ++ Seq(
-    libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-streaming" % sparkVersion % Provided,
-      "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion
-    )
-  ))
+lazy val `hello-streaming` = project.settings(commonSettings ++ sparkSettings)
